@@ -1,4 +1,5 @@
 ﻿using JRLW04CRRUD.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace JRLW04CRRUD.Services;
 
@@ -11,43 +12,42 @@ public class DbBookRepository : IBookRepository
         _db = db;
     }
 
-    public Book Create(Book newBook)
+    public async Task<Book> CreateAsync(Book newBook)
     {
-        _db.Books.Add(newBook);
-        _db.SaveChanges();
+        await _db.Books.AddAsync(newBook);
+        await _db.SaveChangesAsync();
         return newBook;
     }
 
-    public void Delete(int id)
+    public async Task DeleteAsync(int id)
     {
-        Book? bookToDelete = Read(id);
+        Book? bookToDelete = await ReadAsync(id);
         if (bookToDelete != null)
         {
             _db.Books.Remove(bookToDelete);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 
-
-    public Book? Read(int id)
+    public async Task<Book?> ReadAsync(int id)
     {
-        return _db.Books.Find(id);
+        return await _db.Books.FindAsync(id);
     }
 
-    public ICollection<Book> ReadAll()
+    public async Task<ICollection<Book>> ReadAllAsync()
     {
-        return _db.Books.ToList();
+        return await _db.Books.ToListAsync();
     }
 
-    public void Update(int oldId, Book book)
+    public async Task UpdateAsync(int oldId, Book book)
     {
-        Book? bookToUpdate = Read(oldId);
+        Book? bookToUpdate = await ReadAsync(oldId);
         if (bookToUpdate != null)
         {
             bookToUpdate.Title = book.Title;
             bookToUpdate.Edition = book.Edition;
             bookToUpdate.PublicationYear = book.PublicationYear;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 

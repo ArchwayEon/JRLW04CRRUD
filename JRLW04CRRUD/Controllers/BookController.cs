@@ -13,9 +13,9 @@ public class BookController : Controller
         _bookRepo = bookRepo;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var model = _bookRepo.ReadAll();
+        var model = await _bookRepo.ReadAllAsync();
         return View(model);
     }
 
@@ -25,19 +25,19 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(Book newBook)
+    public async Task<IActionResult> Create(Book newBook)
     {
         if (ModelState.IsValid)
         {
-            _bookRepo.Create(newBook);
+            await _bookRepo.CreateAsync(newBook);
             return RedirectToAction("Index");
         }
         return View(newBook);
     }
 
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
-        var book = _bookRepo.Read(id);
+        var book = await _bookRepo.ReadAsync(id);
         if (book == null)
         {
             return RedirectToAction("Index");
@@ -45,9 +45,9 @@ public class BookController : Controller
         return View(book);
     }
 
-    public IActionResult Edit(int id)
+    public async Task<IActionResult> Edit(int id)
     {
-        var book = _bookRepo.Read(id);
+        var book = await _bookRepo.ReadAsync(id);
         if (book == null)
         {
             return RedirectToAction("Index");
@@ -56,19 +56,19 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public IActionResult Edit(Book book)
+    public async Task<IActionResult> Edit(Book book)
     {
         if (ModelState.IsValid)
         {
-            _bookRepo.Update(book.Id, book);
+            await _bookRepo.UpdateAsync(book.Id, book);
             return RedirectToAction("Index");
         }
         return View(book);
     }
 
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var book = _bookRepo.Read(id);
+        var book = await _bookRepo.ReadAsync(id);
         if (book == null)
         {
             return RedirectToAction("Index");
@@ -77,9 +77,9 @@ public class BookController : Controller
     }
 
     [HttpPost, ActionName("Delete")]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        _bookRepo.Delete(id);
+        await _bookRepo.DeleteAsync(id);
         return RedirectToAction("Index");
     }
 

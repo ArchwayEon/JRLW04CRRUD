@@ -4,10 +4,10 @@ namespace JRLW04CRRUD.Services;
 
 public interface IBookRepository
 {
-    ICollection<Book> ReadAll();
-    Book Create(Book book);
-    Book? Read(int id);
-    void Update(int oldId, Book book);
-    void Delete(int id);
+    Task<ICollection<Book>> ReadAllAsync();
+    Task<Book> CreateAsync(Book book);
+    Task<Book?> ReadAsync(int id);
+    Task UpdateAsync(int oldId, Book book);
+    Task DeleteAsync(int id);
 }
 

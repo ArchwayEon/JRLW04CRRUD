@@ -19,15 +19,15 @@ public class BookAPIController : ControllerBase
     }
 
     [HttpGet("all")]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-        return Ok(_bookRepo.ReadAll());
+        return Ok(await _bookRepo.ReadAllAsync());
     }
 
     [HttpGet("one/{id}")]
-    public IActionResult Get(int id)
+    public async Task<IActionResult> Get(int id)
     {
-        var pet = _bookRepo.Read(id);
+        var pet = await _bookRepo.ReadAsync(id);
         if (pet == null)
         {
             return NotFound();
@@ -36,23 +36,23 @@ public class BookAPIController : ControllerBase
     }
 
     [HttpPost("create")]
-    public IActionResult Post([FromForm] Book book)
+    public async Task<IActionResult> Post([FromForm] Book book)
     {
-        _bookRepo.Create(book);
+        await _bookRepo.CreateAsync(book);
         return CreatedAtAction("Get", new { id = book.Id }, book);
     }
 
     [HttpPut("update")]
-    public IActionResult Put([FromForm] Book book)
+    public async Task<IActionResult> Put([FromForm] Book book)
     {
-        _bookRepo.Update(book.Id, book);
+        await _bookRepo.UpdateAsync(book.Id, book);
         return NoContent(); // 204 as per HTTP specification
     }
 
     [HttpDelete("delete/{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        _bookRepo.Delete(id);
+        await _bookRepo.DeleteAsync(id);
         return NoContent(); // 204 as per HTTP specification
     }
 
